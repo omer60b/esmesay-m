@@ -22,7 +22,8 @@ import {
   Filter,
   Sparkles,
   ArrowUpDown,
-  Edit2
+  Edit2,
+  RefreshCw
 } from 'lucide-react';
 
 interface ProductsTabProps {
@@ -447,6 +448,19 @@ export const ProductsTab: React.FC<ProductsTabProps> = ({ db, onUpdateDb }) => {
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap">
+          <button
+            type="button"
+            onClick={() => {
+              onUpdateDb(prev => ({ ...prev, lastSentAt: new Date().toISOString() }));
+              showFeedback('Veritabanındaki tüm ürün ve atamalar Firestore veritabanına başarıyla eşitlendi. Tüm telefon ve bilgisayarlarda canlı olarak görüntülenecektir.');
+            }}
+            className="px-3.5 py-2 bg-indigo-600/40 hover:bg-indigo-600/60 border border-indigo-400/50 rounded-xl text-xs text-indigo-100 font-bold flex items-center gap-2 transition cursor-pointer shadow-xs"
+            title="Tüm telefon ve diğer bilgisayarlara verileri anında eşitler"
+          >
+            <RefreshCw className="w-4 h-4 text-indigo-300 animate-spin-slow" />
+            <span>Tüm Cihazlara / Telefonlara Senkronize Et</span>
+          </button>
+
           <button
             type="button"
             onClick={downloadSampleExcelTemplate}

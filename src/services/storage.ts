@@ -8,8 +8,6 @@ export function getDatabase(): AppDatabase {
   try {
     const raw = localStorage.getItem(DB_KEY);
     if (!raw) {
-      localStorage.setItem(DB_KEY, JSON.stringify(defaultInitialData));
-      syncToFirestore(defaultInitialData).catch(() => {});
       return defaultInitialData;
     }
     const db: AppDatabase = JSON.parse(raw);
