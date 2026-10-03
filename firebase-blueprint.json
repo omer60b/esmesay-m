@@ -1,0 +1,140 @@
+{
+  "entities": {
+    "Branch": {
+      "title": "Branch",
+      "description": "Esme store branch representation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "name": { "type": "string", "maxLength": 200 },
+        "code": { "type": "string", "maxLength": 50 },
+        "city": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "code"]
+    },
+    "Aisle": {
+      "title": "Aisle",
+      "description": "Store department / aisle (Reyon)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "name": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "name"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Admin or store user credential and permission",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "username": { "type": "string", "maxLength": 100 },
+        "password": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["admin", "store"] },
+        "branchId": { "type": "number" },
+        "fullName": { "type": "string", "maxLength": 200 },
+        "isSuperAdmin": { "type": "boolean" }
+      },
+      "required": ["id", "username", "role"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Inventory product item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "barcode": { "type": "string", "maxLength": 100 },
+        "stockCode": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "centralStock": { "type": "number" },
+        "aisleId": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 50 },
+        "category": { "type": "string", "maxLength": 200 },
+        "color": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "barcode", "stockCode", "description", "aisleId"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "Product assignment to branch",
+      "type": "object",
+      "properties": {
+        "branchId": { "type": "number" },
+        "productId": { "type": "number" }
+      },
+      "required": ["branchId", "productId"]
+    },
+    "CountRecord": {
+      "title": "CountRecord",
+      "description": "Store stock count entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "branchId": { "type": "number" },
+        "productId": { "type": "number" },
+        "quantity": { "type": "number" },
+        "countedAt": { "type": "string" },
+        "counterName": { "type": "string", "maxLength": 200 },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "branchId", "productId", "quantity"]
+    },
+    "Evaluation": {
+      "title": "Evaluation",
+      "description": "Branch audit evaluation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "branchId": { "type": "number" },
+        "score": { "type": "number" },
+        "feedback": { "type": "string", "maxLength": 1000 },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "branchId", "score"]
+    },
+    "BranchCountStatus": {
+      "title": "BranchCountStatus",
+      "description": "Count state for a store",
+      "type": "object",
+      "properties": {
+        "branchId": { "type": "number" },
+        "isCompleted": { "type": "boolean" },
+        "completedAt": { "type": "string" },
+        "completedBy": { "type": "string" }
+      },
+      "required": ["branchId", "isCompleted"]
+    },
+    "AppData": {
+      "title": "AppData",
+      "description": "Full synchronized database payload for real-time state sync",
+      "type": "object",
+      "properties": {
+        "updatedAt": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/appData/{docId}": {
+      "schema": { "$ref": "#/entities/AppData" },
+      "description": "Stores the central real-time application database state"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Individual product documents for real-time stock sync"
+    },
+    "/assignments/{assignmentId}": {
+      "schema": { "$ref": "#/entities/Assignment" },
+      "description": "Branch product assignment records"
+    },
+    "/counts/{countId}": {
+      "schema": { "$ref": "#/entities/CountRecord" },
+      "description": "Store stock count entries"
+    },
+    "/branchStatuses/{statusId}": {
+      "schema": { "$ref": "#/entities/BranchCountStatus" },
+      "description": "Branch count completion status"
+    }
+  }
+}

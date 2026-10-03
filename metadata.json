@@ -1,0 +1,6 @@
+{
+  "name": "Esme Sayım - Mağaza Stok Yönetimi",
+  "description": "Esme Mağaza zinciri için anlık stok ataması, mağaza sayımları ve raporlama sistemi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
